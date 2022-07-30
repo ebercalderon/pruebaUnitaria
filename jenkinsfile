@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    tools {
+        nodejs "node"
+    }
+    stages {
+        stage('copy repository'){
+            steps{
+                git branch: 'master', credentialsId: '0d40f9d0-3005-4685-93d0-d1ab75d73000', url: 'https://github.com/ebercalderon/pruebaUnitaria.git'
+            }
+        }
+        stage('install dependencias'){
+            steps{
+                bat 'npm install'
+            }
+        }
+        stage('build'){
+            steps{
+                bat 'npm audit fix'
+            }
+        }
+        stage('test'){
+            steps{
+                bat 'npm test'
+            }
+        }
+        stage('deploy'){
+            steps{
+                echo 'Deploying...'
+            }
+        }
+    }
+}
